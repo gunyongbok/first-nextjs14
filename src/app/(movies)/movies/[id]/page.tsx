@@ -1,31 +1,16 @@
-import axios from "axios";
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const url = `${apiUrl}/movies`;
-
-async function getMovies(id: string) {
-  try {
-    const response = await axios.get(`${url}/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function getVideos(id: string) {
-  try {
-    const response = await axios.get(`${url}/${id}/videos`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-}
+import MovieInfo from "@/app/components/movie-info";
+import MovieVideos from "@/app/components/movie-videos";
+import { Suspense } from "react";
 
 const MovieDetail = async ({ params: { id } }: { params: { id: string } }) => {
-  const [movie, videos] = await Promise.all([getMovies(id), getVideos(id)]);
   return (
     <div>
-      <h1>Movie : {movie.title}</h1>
+      <Suspense fallback={<h1>Loading Movie</h1>}>
+        <MovieInfo id={id} />
+      </Suspense>
+      <Suspense fallback={<h1>Loading Videos</h1>}>
+        <MovieVideos id={id} />
+      </Suspense>
     </div>
   );
 };
