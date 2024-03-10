@@ -1,5 +1,6 @@
 import axios from "axios";
-import Link from "next/link";
+import styles from "../../styles/home.module.css";
+import Movie from "../components/movie";
 
 export const metadata = {
   title: "home",
@@ -37,13 +38,15 @@ async function getMovies() {
 const Homepage = async () => {
   const movies = await getMovies();
   return (
-    <>
+    <div className={styles.container}>
       {movies.map((movie: Movie) => (
-        <li>
-          <Link href={`/movies/${movie.id}`}>{movie.title}</Link>
-        </li>
+        <Movie
+          title={movie.title}
+          id={movie.id}
+          poster_path={movie.poster_path}
+        />
       ))}
-    </>
+    </div>
   );
 };
 
